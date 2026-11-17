@@ -1,0 +1,405 @@
+{
+ "haqes": {
+  "title": "HAQES ensemble mean (GMU/NASA)",
+  "freq": "3h",
+  "source": "GES DISC HAQES_NA_PM25_{TOT,OC,BC} v1 (data.gesdisc.earthdata.nasa.gov/data/HAQAST, Earthdata login)",
+  "notes": "12 km North America, 3-hourly ensemble mean of GEOS, NAAPS, GEFS-Aerosols, HRRR-Smoke and NACC-CMAQ (next-day forecast). Partly dependent on AirNow via the NACC-CMAQ bias correction.",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "desc": "ensemble-mean surface PM2.5"
+   },
+   "pm25_oc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "ensemble-mean surface PM2.5 organic carbon"
+   },
+   "pm25_bc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "ensemble-mean surface PM2.5 black carbon"
+   }
+  },
+  "dependence": "ensemble incl. AirNow-corrected NAQFC"
+ },
+ "naqfc": {
+  "title": "NOAA NAQFC/AQM (raw)",
+  "freq": "1h",
+  "source": "s3://noaa-nws-naqfc-pds AQMv5/v6/v7 CS ave_1hr_{pm25,o3} (12z cycle, f01-f24)",
+  "notes": "5 km CONUS (grid 227); CMAQ (v5/v6) then UFS-AQM (v7, 2024-05-14). Forecast hours 1-24 of the 12 UTC cycle joined; no surface observations assimilated.",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "desc": "surface PM2.5, 1 h mean"
+   },
+   "o3": {
+    "units": "ppb",
+    "kind": "ppb",
+    "desc": "surface O3, 1 h mean"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "naqfc_bc": {
+  "title": "NOAA NAQFC/AQM (bias-corrected)",
+  "freq": "1h",
+  "source": "s3://noaa-nws-naqfc-pds AQMv5/v6/v7 CS ave_1hr_{pm25,o3}_bc (12z cycle, f01-f24)",
+  "notes": "Bias-corrected NAQFC (analog/Kalman correction trained on AirNow observations: not independent of AQS/AirNow). Forecast hours 1-24 of the 12 UTC cycle joined.",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "desc": "surface PM2.5, 1 h mean"
+   },
+   "o3": {
+    "units": "ppb",
+    "kind": "ppb",
+    "desc": "surface O3, 1 h mean"
+   }
+  },
+  "dependence": "bias-corrected against AirNow"
+ },
+ "acag": {
+  "title": "ACAG V6.GL.03 (+V6.NA.01 composition)",
+  "freq": "1d",
+  "source": "s3://satpmdata (WashU ACAG; V6GL03 global, V6NA01 North America composition), anonymous",
+  "notes": "0.01 deg monthly means labelled at the 1st of the month; CNN calibrated to ground monitors",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "period": "month"
+   },
+   "pm25_na": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "period": "month"
+   },
+   "pm25_so4": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_no3": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_nh4": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_om": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_bc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_dust": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   },
+   "pm25_ss": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "period": "month"
+   }
+  },
+  "dependence": "calibrated to ground monitors (global); NA composition uses speciation networks"
+ },
+ "ghap": {
+  "title": "GHAP GlobalHighPM2.5 V2 daily 1 km",
+  "freq": "1d",
+  "source": "Zenodo GlobalHighPM2.5 per-year records (D1K monthly zips), one range request per day",
+  "notes": "0.01 deg daily (UTC day) PM2.5 over land; ML trained on ground monitors (not independent)",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "day_def": "UTC day"
+   }
+  },
+  "dependence": "trained on ~9,500 monitors (OpenAQ, EPA, EEA, CNEMC)"
+ },
+ "ghap_m": {
+  "title": "GHAP GlobalHighPM2.5 V2 monthly 1 km",
+  "freq": "1d",
+  "source": "Zenodo GlobalHighPM2.5 per-year records (M1K monthly NetCDF)",
+  "notes": "0.01 deg monthly PM2.5 labelled at the 1st of the month; ML trained on ground monitors",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "period": "month"
+   }
+  },
+  "dependence": "trained on ~9,500 monitors (OpenAQ, EPA, EEA, CNEMC)"
+ },
+ "hrrr_smoke": {
+  "title": "HRRR-Smoke (HRRRv4 analysis)",
+  "freq": "1h",
+  "source": "dynamical.org noaa-hrrr-analysis-virtual v0.1.0 Icechunk (virtual refs to s3://noaa-hrrr-bdp-pds wrfsfcf00 GRIB2), variable mass_density_8m",
+  "notes": "3 km CONUS. Near-surface (8 m) smoke mass density from fire emissions only (not total PM2.5); instantaneous analysis value at the stamp. Starts with HRRRv4 (2020-12-02).",
+  "variables": {
+   "pm25_smoke": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "desc": "HRRR near-surface (8 m) smoke PM2.5, instantaneous",
+    "instantaneous": true
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "geoscf_v1": {
+  "title": "GEOS-CF v1 (replay)",
+  "freq": "1h",
+  "source": "s3://smce-geos-cf-public/geos-cf-rpl.zarr (NASA SMCE public Zarr, anonymous)",
+  "notes": "0.25 deg hourly; PM2.5 at 35% RH (pm25_rh35_gcc); no surface obs assimilated",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "35%"
+   },
+   "o3": {
+    "units": "ppb",
+    "kind": "ppb"
+   },
+   "no2": {
+    "units": "ppb",
+    "kind": "ppb"
+   },
+   "co": {
+    "units": "ppb",
+    "kind": "ppb"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "geoscf_v2": {
+  "title": "GEOS-CF v2 (replay)",
+  "freq": "1h",
+  "source": "s3://smce-geos-cf-public/geos-cf-v2-rpl.zarr (NASA SMCE public Zarr, anonymous)",
+  "notes": "0.25 deg hourly; PM at 35% RH; satellite O3 assimilated, no surface obs",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "35%"
+   },
+   "pm10": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "35%"
+   },
+   "pm25_bc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_du": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_nh4": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_nit": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_oc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_soa": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_ss": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "pm25_su": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "rh_basis": "35%"
+   },
+   "o3": {
+    "units": "ppb",
+    "kind": "ppb"
+   },
+   "no2": {
+    "units": "ppb",
+    "kind": "ppb"
+   },
+   "co": {
+    "units": "ppb",
+    "kind": "ppb"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "merra2": {
+  "title": "MERRA-2 aerosols (M2T1NXAER)",
+  "freq": "1h",
+  "source": "GES DISC M2T1NXAER.5.12.4 daily files via Earthdata HTTPS (range reads of 7 variables)",
+  "notes": "0.5x0.625 deg hourly; dry mass, no nitrate; PM2.5 = DU25+SS25+BC+1.4*OC+SO4*132.14/96.06; AOD assimilated, no surface PM",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "dry",
+    "oc_factor": 1.4
+   },
+   "pm10": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "dry",
+    "oc_factor": 1.4
+   },
+   "pm25_du": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm10_du": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_ss": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm10_ss": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_bc": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_oc": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "organic carbon as carried by GOCART"
+   },
+   "pm25_so4": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "sulfate ion"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "merra2_cnn": {
+  "title": "MERRA-2 CNN HAQAST bias-corrected PM2.5",
+  "freq": "1h",
+  "source": "GES DISC MERRA2_CNN_HAQAST_PM25.1 daily files via Earthdata HTTPS",
+  "notes": "0.5x0.625 deg hourly; CNN ensemble trained on >5000 OpenAQ reference monitors (not independent of AirNow/AQS/embassy data)",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "as training monitors"
+   },
+   "qflag": {
+    "units": "1",
+    "kind": "flag",
+    "desc": "1 low, 2 medium (ocean), 3 high, 4 highest"
+   }
+  },
+  "dependence": "trained on OpenAQ reference monitors (incl. AQS/AirNow, embassies)"
+ },
+ "merra2_gmi": {
+  "title": "MERRA-2 GMI aerosols (full chemistry, with nitrate)",
+  "freq": "1h",
+  "source": "NCCS portal datashare/merra2_gmi tavg1_2d_aer_Nx (range reads)",
+  "notes": "0.5x0.625 deg hourly; MERRA-2 met replay + GMI chemistry; PM25 = total reconstructed PM2.5 incl. nitrate/NH4",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "desc": "total reconstructed PM2.5"
+   },
+   "pm25_no3": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "nitrate PM2.5"
+   },
+   "pm25_nh4": {
+    "units": "ug m-3",
+    "kind": "spec",
+    "desc": "ammonium"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ },
+ "geosfp_aer": {
+  "title": "GEOS-FP aerosols (tavg3_2d_aer_Nx)",
+  "freq": "3h",
+  "source": "NCCS HTTPS portal GEOS.fp.asm.tavg3_2d_aer_Nx (range reads)",
+  "notes": "0.25x0.3125 deg, 3-hourly means; GOCART dry mass, PM2.5 = DU25+SS25+BC+1.4*OC+SO4*132.14/96.06 (nitrate stored separately); MODIS AOD assimilated, no surface PM",
+  "variables": {
+   "pm25": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "dry",
+    "oc_factor": 1.4
+   },
+   "pm10": {
+    "units": "ug m-3",
+    "kind": "pm",
+    "rh_basis": "dry",
+    "oc_factor": 1.4
+   },
+   "pm25_du": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm10_du": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_ss": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm10_ss": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_bc": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_oc": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_so4": {
+    "units": "ug m-3",
+    "kind": "spec"
+   },
+   "pm25_no3": {
+    "units": "ug m-3",
+    "kind": "spec"
+   }
+  },
+  "dependence": "no surface PM/O3/NO2 observations used"
+ }
+}
